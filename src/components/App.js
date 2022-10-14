@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { LoadingContext } from '../contexts/LoadingContext.js';
+import { Route, Switch } from 'react-router-dom';
 import Header from './Header.js';
 import Main from './Main.js';
-import Footer from './Footer.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import DeleteCardPopup from './DeleteCardPopup.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/Api.js';
+import Register from './Register.js';
+import Login from './Login.js';
+import InfoTooltip from './InfoTooltip.js';
+import ProtectedRoute from './ProtectedRoute.js';
 
 function App() {
   // popup state
@@ -123,8 +127,25 @@ function App() {
     <div className="App">
       <CurrentUserContext.Provider value={currentUser} >
         <Header />
-        <Main onEditProfile={onEditProfile} onAddPlace={onAddPlace} onEditAvatar={onEditAvatar} onCardClick={handleCardClick} cardsData={cardsData} onCardLike={handleCardLike} onCardDelete={handleDeleteClick} />
-        <Footer />
+        <Switch>
+          <Route path='/sign-in'>
+            <Login />
+          </Route>
+          <Route path='/sign-up'>
+            <Register />
+          </Route>
+          <ProtectedRoute 
+            path="/"
+            component={Main}
+            onEditProfile={onEditProfile} 
+            onAddPlace={onAddPlace} 
+            onEditAvatar={onEditAvatar} 
+            onCardClick={handleCardClick} 
+            cardsData={cardsData} 
+            onCardLike={handleCardLike} 
+            onCardDelete={handleDeleteClick} 
+          />
+        </Switch>
         <LoadingContext.Provider value={isLoading} >
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
@@ -132,6 +153,7 @@ function App() {
           <DeleteCardPopup isOpen={deletedCard.isOpen} onClose={closeAllPopups} card={deletedCard.data} onDeleteCard={handleCardDelete} />
         </LoadingContext.Provider>
         <ImagePopup isOpen={selectedCard.isOpen} onClose={closeAllPopups} card={selectedCard.data} isLoading={isLoading} />
+        <InfoTooltip />
       </CurrentUserContext.Provider>
     </div>
   );

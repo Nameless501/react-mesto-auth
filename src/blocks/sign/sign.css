@@ -1,0 +1,119 @@
+.sign {
+    padding: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.sign__form {
+    margin: 0;
+    padding: 0;
+    width: 358px;
+}
+
+.sign__fieldset{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 0;
+}
+
+.sign__title {
+    margin: 0;
+    padding: 0;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.sign__input {
+    margin: 48px 0 0;
+    padding: 0 0 10px;
+    width: 358px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    border: 0;
+    border-bottom: 2px solid rgba(204, 204, 204, 1);
+    background-color: #000;
+    color: #FFFFFF;
+}
+
+.sign__input:nth-of-type(2) {
+    margin-top: 0;
+}
+
+.sign__input:focus {
+    outline: none;
+}
+
+.sign__input::placeholder {
+    color: rgba(204, 204, 204, 1);
+    font-weight: 400;
+}
+
+.sign__error-message {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FF0000;
+    display: block;
+    min-height: 30px;
+}
+
+.sign__submit-button {
+    margin: 186px 0 0;
+    padding: 14px 84px;
+    border: 0;
+    box-sizing: border-box;
+    background-color: #FFF;
+    color: #000;
+    border-radius: 2px;
+    width: 358px;
+    height: 50px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+}
+
+.sign__submit-button:hover {
+    opacity: .85;
+    cursor: pointer;
+}
+
+.sign__submit-button_disabled {
+    opacity: 0.6;
+}
+
+.sign__submit-button_disabled:hover {
+    opacity: 0.6;
+}
+
+.sign__caption {
+    margin: 15px 0 0;
+    padding: 0;
+    text-align: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFF;
+}
+
+.sign__link {
+    text-decoration: none;
+}
+
+.sign__link:visited {
+    color: #FFF;
+}
+
+.sign__link:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
