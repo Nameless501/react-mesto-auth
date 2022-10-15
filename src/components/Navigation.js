@@ -4,13 +4,15 @@ import { useLocation } from "react-router-dom";
 import HeaderButton from './HeaderButton';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-function Navigation({ signOut }) {
+function Navigation({ signOut, isOpen }) {
     let isLoggedIn = useContext(LoginContext);
     let currentLocation = useLocation();
     const currentUser = useContext(CurrentUserContext);
 
     return(
-        <ul className="header__navigation-bar">
+        <ul 
+            className={`header__navigation-bar ${isOpen && "header__navigation-bar_opened"}`}
+        >
             {isLoggedIn &&
                 <li>
                     <p className="header__email" >
@@ -21,11 +23,9 @@ function Navigation({ signOut }) {
             <li>
                 {currentLocation.pathname === "/sign-up" ?
                     <HeaderButton text="Войти" link="/sign-in" />
-                    : 
-                    currentLocation.pathname === "/sign-in" ?
-                        <HeaderButton text="Регистрация" link="/sign-up" />
-                        :
-                        <HeaderButton text="Выйти" link="/sign-in" signOut={signOut} />
+                        : currentLocation.pathname === "/sign-in" ?
+                            <HeaderButton text="Регистрация" link="/sign-up" />
+                                : <HeaderButton text="Выйти" link="/sign-in" signOut={signOut} />
                 }
             </li>
         </ul>

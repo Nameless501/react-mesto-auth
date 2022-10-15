@@ -1,0 +1,4 @@
+.header__navigation-bar_opened {
+    margin-top: 0px;
+    transition: margin-top, .3s;
+}

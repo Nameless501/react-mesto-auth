@@ -11,17 +11,17 @@ export const register = (password, email) => {
             email
             })
     })
-    .then(response => {
-        try {
-            if (response.status === 201){
-                return response.json();
+        .then(response => {
+            try {
+                if (response.status === 201){
+                    return response.json();
+                }
+            } catch(e) {
+                return (e)
             }
-        } catch(e) {
-            return (e)
-        }
-    })
-    .then(res => res)
-    .catch(err => console.log(`Не удалось зарегистрировать пользователя. ${err}`));
+        })
+        .then(res => res)
+        .catch(err => console.log(`Не удалось зарегистрировать пользователя. ${err}`));
 }
 
 export const login = (password, email) => {
@@ -35,24 +35,24 @@ export const login = (password, email) => {
             email
             })
     })
-    .then(response => {
-        try {
-            if (response.status === 200){
-                return response.json();
+        .then(response => {
+            try {
+                if (response.status === 200){
+                    return response.json();
+                }
+            } catch(err) {
+                return (err)
             }
-        } catch(err) {
-            return (err)
-        }
-    })
-    .then(data => {
-        if(data.token) {
-            localStorage.setItem('token', data.token);
-            return data;
-        } else {
-            return;
-        }
-    })
-    .catch(err => console.log(`Не удалось войти. ${err}`));
+        })
+        .then(data => {
+            if(data.token) {
+                localStorage.setItem('token', data.token);
+                return data;
+            } else {
+                return;
+            }
+        })
+        .catch(err => console.log(`Не удалось войти. ${err}`));
 }
 
 export const checkToken = (token) => {
@@ -63,15 +63,15 @@ export const checkToken = (token) => {
             "Authorization" : `Bearer ${token}`
             },
     })
-    .then(response => {
-        try {
-            if (response.status === 200){
-                return response.json();
+        .then(response => {
+            try {
+                if (response.status === 200){
+                    return response.json();
+                }
+            } catch(err) {
+                return (err);
             }
-        } catch(err) {
-            return (err);
-        }
-    })
-    .then(res => res.data)
-    .catch(err => console.log(`Не удалось проверить токен. ${err}`));
+        })
+        .then(res => res.data)
+        .catch(err => console.log(`Не удалось проверить токен. ${err}`));
 }

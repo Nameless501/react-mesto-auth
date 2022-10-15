@@ -3,7 +3,7 @@ import { LoginContext } from '../contexts/LoginContext';
 import { Link } from 'react-router-dom';
 
 function HeaderButton({ text, link, signOut }) {
-    let isLoggedIn = useContext(LoginContext);
+    const isLoggedIn = useContext(LoginContext);
 
     return(
         <Link to={link} >

@@ -16,31 +16,17 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
 
     const [formIsValid, setFormValidity] = useState(false);
 
-    function handleNameChange(evt) {
+    function handleChange(evt) {
+        let callBack = evt.target.name === 'name' ? setName : setLink;
+        
         if (evt.target.validity.valid) {
-            setName({
+            callBack({
                 value: evt.target.value,
                 isValid: true,
                 validationMsg: ''
             });
         } else {
-            setName({
-                value: evt.target.value,
-                isValid: false,
-                validationMsg: evt.target.validationMessage
-            });
-        }
-    }
-
-    function handleLinkChange(evt) {
-        if (evt.target.validity.valid) {
-            setLink({
-                value: evt.target.value,
-                isValid: true,
-                validationMsg: ''
-            });
-        } else {
-            setLink({
+            callBack({
                 value: evt.target.value,
                 isValid: false,
                 validationMsg: evt.target.validationMessage
@@ -57,12 +43,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         })
     }
 
-    function handleFormValidity() {
-        name.isValid && link.isValid ? setFormValidity(true) : setFormValidity(false);
-    }
-
     useEffect(() => {
-        handleFormValidity();
+        name.isValid && link.isValid ? setFormValidity(true) : setFormValidity(false);
     },
     [name, link])
 
@@ -80,14 +62,52 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     }, [isOpen])
 
     return(
-        <PopupWithForm name="add" title="Новое место" buttonText="Создать" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} isValid={formIsValid} >
+        <PopupWithForm 
+            name="add" 
+            title="Новое место" 
+            buttonText="Создать" 
+            isOpen={isOpen} 
+            onClose={onClose} 
+            onSubmit={handleSubmit} 
+            isValid={formIsValid} 
+        >
             <>
-                <input type="text" name="name" placeholder="Название" id="place-input" className="popup__input popup__input_type_place" required minLength="2" maxLength="30" onChange={handleNameChange} value={name.value} />
-                <span className={`popup__error-message ${(!name.isValid && isOpen) ? "popup__error-message_visible" : "popup__error-message_hidden"}`} >
+                <input 
+                    type="text" 
+                    name="name" 
+                    placeholder="Название" 
+                    id="place-input" 
+                    className="popup__input popup__input_type_place" 
+                    required 
+                    minLength="2" 
+                    maxLength="30" 
+                    onChange={handleChange} 
+                    value={name.value} 
+                />
+                <span 
+                    className={`popup__error-message ${
+                        (!name.isValid && isOpen) ? 
+                            "popup__error-message_visible" : "popup__error-message_hidden"
+                        }`} 
+                >
                     {name.validationMsg}
                 </span>
-                <input type="url" name="link" placeholder="Ссылка на картинку" id="link-input" className="popup__input popup__input_type_link" required onChange={handleLinkChange} value={link.value} />
-                <span className={`popup__error-message ${(!link.isValid && isOpen) ? "popup__error-message_visible" : "popup__error-message_hidden"}`} >
+                <input 
+                    type="url" 
+                    name="link" 
+                    placeholder="Ссылка на картинку" 
+                    id="link-input" 
+                    className="popup__input popup__input_type_link" 
+                    required 
+                    onChange={handleChange} 
+                    value={link.value} 
+                />
+                <span 
+                    className={`popup__error-message ${
+                        (!link.isValid && isOpen) ? 
+                            "popup__error-message_visible" : "popup__error-message_hidden"
+                        }`} 
+                >
                     {link.validationMsg}
                 </span>
             </>

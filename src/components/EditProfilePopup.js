@@ -70,7 +70,15 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     [currentUser, isOpen])
 
     return(
-        <PopupWithForm name="profile" title="Редактировать профиль" buttonText="Сохранить" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} isValid={formIsValid} >
+        <PopupWithForm 
+            name="profile" 
+            title="Редактировать профиль" 
+            buttonText="Сохранить" 
+            isOpen={isOpen} 
+            onClose={onClose} 
+            onSubmit={handleSubmit} 
+            isValid={formIsValid} 
+        >
             <>
                 <input 
                     type="text" 
@@ -84,8 +92,10 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
                     value={name.value || ''} 
                 />
                 <span 
-                    className={`popup__error-message ${(!name.isValid && isOpen) ? "popup__error-message_visible" 
-                        : "popup__error-message_hidden"}`} 
+                    className={`popup__error-message ${
+                        (!name.isValid && isOpen) ? 
+                            "popup__error-message_visible" : "popup__error-message_hidden"
+                    }`} 
                 >
                     {name.validationMsg}
                 </span>
@@ -101,8 +111,10 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
                     value={description.value || ''} 
                 />
                 <span 
-                    className={`popup__error-message ${(!description.isValid && isOpen) ? "popup__error-message_visible" 
-                        : "popup__error-message_hidden"}`} 
+                    className={`popup__error-message ${
+                        (!description.isValid && isOpen) ? 
+                            "popup__error-message_visible" : "popup__error-message_hidden"
+                    }`} 
                 >
                     {description.validationMsg}
                 </span>

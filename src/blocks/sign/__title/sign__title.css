@@ -7,3 +7,10 @@
     text-align: center;
     color: #FFFFFF;
 }
+
+@media screen and (max-width: 767px) {
+    .sign__title {
+        font-size: 20px;
+        line-height: 24px;
+    }
+}

@@ -162,7 +162,7 @@ function App() {
     }
   }
 
-  // проверка токена при входе и выход из аккаунта
+  // проверка токена при входе, выход из аккаунта
 
   function checkToken() {
     const token = localStorage.getItem('token');
@@ -184,7 +184,7 @@ function App() {
 
   useEffect(() => {
     checkToken()
-  }, []);
+  }, [isLoggedIn]);
 
   function signOut(){
     localStorage.removeItem('token');

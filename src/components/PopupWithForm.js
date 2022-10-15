@@ -5,8 +5,15 @@ function PopupWithForm({ name, title, buttonText, isOpen, onClose, onSubmit, isV
     const isLoading = useContext(LoadingContext);
 
     return(
-        <section className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}>
-            <form name={name} className="popup__form popup__form_type_form-popup" onSubmit={onSubmit} noValidate>
+        <section 
+            className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}
+        >
+            <form 
+                name={name} 
+                className="popup__form popup__form_type_form-popup" 
+                onSubmit={onSubmit} 
+                noValidate
+            >
                 <fieldset className="popup__fieldset">
                     <legend className="popup__title">
                         {title}
@@ -24,7 +31,11 @@ function PopupWithForm({ name, title, buttonText, isOpen, onClose, onSubmit, isV
                         {isLoading ? 'Сохранение...' : buttonText}
                     </button>
                 </fieldset>
-                <button type="reset" className="popup__close-button" onClick={onClose} />
+                <button 
+                    type="reset" 
+                    className="popup__close-button" 
+                    onClick={onClose} 
+                />
             </form>
         </section>
     );

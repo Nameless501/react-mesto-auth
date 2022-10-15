@@ -23,3 +23,10 @@
     color: rgba(204, 204, 204, 1);
     font-weight: 400;
 }
+
+@media screen and (max-width: 767px) {
+    .sign__input {
+        margin-top: 38px;
+        width: 260px;
+    }
+}

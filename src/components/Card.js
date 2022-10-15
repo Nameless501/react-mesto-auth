@@ -22,13 +22,31 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     return(
         <li className='elements__card'>
             <figure className="elements__figure">
-                <img src={card.link} alt={card.name} className="elements__image" onClick={handleClick} />
-                <figcaption className="elements__caption">{card.name}</figcaption>
+                <img 
+                    src={card.link} 
+                    alt={card.name} 
+                    className="elements__image" 
+                    onClick={handleClick} />
+                <figcaption className="elements__caption">
+                    {card.name}
+                </figcaption>
             </figure>
-            <button type="button" className={`elements__like-button ${isLiked && "elements__like-button__active"}`} onClick={handleLike} >
-                <p className="elements__like-counter">{card.likes.length}</p>
+            <button 
+                type="button" 
+                className={`elements__like-button ${isLiked && "elements__like-button__active"}`} 
+                onClick={handleLike} 
+            >
+                <p className="elements__like-counter">
+                    {card.likes.length}
+                </p>
             </button>
-            {isOwn && <button type="button" className="elements__delete-button" onClick={handleDeleteClick} />}
+            {isOwn && 
+                <button 
+                    type="button" 
+                    className="elements__delete-button" 
+                    onClick={handleDeleteClick} 
+                />
+            }
         </li>
     );
 }
