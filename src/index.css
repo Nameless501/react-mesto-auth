@@ -125,3 +125,23 @@
 /* Блок sign */
 
 @import url(./blocks/sign/sign.css);
+
+@import url(./blocks/sign/__form/sign__form.css);
+
+@import url(./blocks/sign/__fieldset/sign__fieldset.css);
+
+@import url(./blocks/sign/__title/sign__title.css);
+
+@import url(./blocks/sign/__input/sign__input.css);
+
+@import url(./blocks/sign/__input/sign__input.css);
+
+@import url(./blocks/sign/__error-messag/sign__error-messag.css);
+
+@import url(./blocks/sign/__submit-button/sign__submit-button.css);
+
+@import url(./blocks/sign/__submit-button/_disabled/sign__submit-button_disabled.css);
+
+@import url(./blocks/sign/__caption/sign__caption.css);
+
+@import url(./blocks/sign/__link/sign__link.css);

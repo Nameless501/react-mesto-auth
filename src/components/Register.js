@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as auth from '../utils/Auth';
 
-function Register() {
+function Register({ handleInfoOpen }) {
     const [email, setEmail] = useState({
         value: '',
         isValid: false,
@@ -16,8 +16,6 @@ function Register() {
     });
 
     const [formIsValid, setFormValidity] = useState(false);
-
-    const history = useHistory();
 
     function handleChange(evt) {
         let callBack = evt.target.name === 'email' ? setEmail : setPassword;
@@ -37,12 +35,8 @@ function Register() {
         }
     }
 
-    function handleFormValidity() {
-        email.isValid && password.isValid ? setFormValidity(true) : setFormValidity(false);
-    }
-
     useEffect(() => {
-        handleFormValidity();
+        email.isValid && password.isValid ? setFormValidity(true) : setFormValidity(false);
     },
     [email, password])
 
@@ -60,17 +54,15 @@ function Register() {
     },
     [])
 
-    function redirectToLogin() {
-        history.push('/sign-in');
-    }
-
     function handleSubmit(evt) {
         evt.preventDefault();
 
         auth.register(password.value, email.value)
             .then(res => {
                 if(res) {
-                    redirectToLogin();
+                    handleInfoOpen(true);
+                } else {
+                    handleInfoOpen(false);
                 }
             });
     }
@@ -127,9 +119,9 @@ function Register() {
                     </button>
                     <p className="sign__caption" >
                         Уже зарегистрированы?&nbsp;
-                        <span className="sign__link" onClick={redirectToLogin}>
+                        <Link className="sign__link" to="/sign-in" >
                             Войти
-                        </span>
+                        </Link>
                     </p>
                 </fieldset>
             </form>

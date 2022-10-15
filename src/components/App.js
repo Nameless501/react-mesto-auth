@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import { LoginContext } from '../contexts/LoginContext.js';
 import { LoadingContext } from '../contexts/LoadingContext.js';
 import { Route, Switch } from 'react-router-dom';
 import Header from './Header.js';
@@ -23,17 +24,21 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({data: '', isOpen: false});
   const [deletedCard, setDeletedCard] = useState({data: '', isOpen: false});
   const [isLoading, setIsLoading] = useState(false);
+  const [registerStatus, setRegisterStatus] = useState({isOpen: false, status: false});
   
   // cards and user data state
   const [currentUser, setCurrentUser] = useState({});
   const [cardsData, setCardsData] = useState([]);
 
+  // login state
+  const [isLoggedIn, setLoginStatus] = useState(false);
+
   // Получение данных карточек и пользователя при открытии страницы
   useEffect(() => {
     Promise.all([api.getCardsData(), api.getUserData()])
         .then(allData => {
-            const [cardsData, userData] = allData;
-            return [cardsData, userData]
+          const [cardsData, userData] = allData;
+          return [cardsData, userData]
         })
         .then(([cardsData, userData]) => {
           setCurrentUser(userData);
@@ -61,6 +66,7 @@ function App() {
     setEditAvatarState(false);
     setSelectedCard({data: '', isOpen: false});
     setDeletedCard({data: '', isOpen: false});
+    setRegisterStatus({isOpen: false, status: false});
   }
 
   function handleCardClick(card) {
@@ -123,38 +129,80 @@ function App() {
       .finally(() => setIsLoading(false));
   }
 
+  function handleRegisterInfo(isSuccess) {
+    if(isSuccess) {
+      setRegisterStatus({
+        isOpen: true,
+        status: true
+      })
+    } else {
+      setRegisterStatus({
+        isOpen: true,
+        status: false
+      })
+    }
+  }
+
   return (
     <div className="App">
-      <CurrentUserContext.Provider value={currentUser} >
-        <Header />
-        <Switch>
-          <Route path='/sign-in'>
-            <Login />
-          </Route>
-          <Route path='/sign-up'>
-            <Register />
-          </Route>
-          <ProtectedRoute 
-            path="/"
-            component={Main}
-            onEditProfile={onEditProfile} 
-            onAddPlace={onAddPlace} 
-            onEditAvatar={onEditAvatar} 
-            onCardClick={handleCardClick} 
-            cardsData={cardsData} 
-            onCardLike={handleCardLike} 
-            onCardDelete={handleDeleteClick} 
+      <LoginContext.Provider value={isLoggedIn} >
+        <CurrentUserContext.Provider value={currentUser} >
+          <Header />
+          <Switch>
+            <Route path='/sign-in'>
+              <Login setLoginStatus={setLoginStatus} />
+            </Route>
+            <Route path='/sign-up'>
+              <Register handleInfoOpen={handleRegisterInfo} />
+            </Route>
+            <ProtectedRoute 
+              path="/"
+              component={Main}
+              onEditProfile={onEditProfile} 
+              onAddPlace={onAddPlace} 
+              onEditAvatar={onEditAvatar} 
+              onCardClick={handleCardClick} 
+              cardsData={cardsData} 
+              onCardLike={handleCardLike} 
+              onCardDelete={handleDeleteClick} 
+            />
+          </Switch>
+          <LoadingContext.Provider value={isLoading} >
+            <EditProfilePopup 
+              isOpen={isEditProfilePopupOpen} 
+              onClose={closeAllPopups} 
+              onUpdateUser={handleUpdateUser} 
+            />
+            <AddPlacePopup 
+              isOpen={isAddPlacePopupOpen} 
+              onClose={closeAllPopups} 
+              onAddPlace={handleAddPlaceSubmit} 
+            />
+            <EditAvatarPopup 
+              isOpen={isEditAvatarPopupOpen} 
+              onClose={closeAllPopups} 
+              onUpdateAvatar={handleUpdateAvatar} 
+            />
+            <DeleteCardPopup 
+              isOpen={deletedCard.isOpen} 
+              onClose={closeAllPopups} 
+              card={deletedCard.data} 
+              onDeleteCard={handleCardDelete} 
+            />
+          </LoadingContext.Provider>
+          <ImagePopup 
+            isOpen={selectedCard.isOpen} 
+            onClose={closeAllPopups} 
+            card={selectedCard.data} 
+            isLoading={isLoading} 
           />
-        </Switch>
-        <LoadingContext.Provider value={isLoading} >
-          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
-          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-          <DeleteCardPopup isOpen={deletedCard.isOpen} onClose={closeAllPopups} card={deletedCard.data} onDeleteCard={handleCardDelete} />
-        </LoadingContext.Provider>
-        <ImagePopup isOpen={selectedCard.isOpen} onClose={closeAllPopups} card={selectedCard.data} isLoading={isLoading} />
-        <InfoTooltip />
-      </CurrentUserContext.Provider>
+          <InfoTooltip 
+            isOpen={registerStatus.isOpen} 
+            isSuccess={registerStatus.status} 
+            onClose={closeAllPopups} 
+          />
+        </CurrentUserContext.Provider>
+      </LoginContext.Provider>
     </div>
   );
 }

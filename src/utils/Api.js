@@ -12,7 +12,7 @@ class Api {
     getCardsData = () => {
         return fetch(`${this._baseUrl}/${this._cohort}/cards`, {
             headers: {
-              authorization: this._token
+                authorization: this._token
             }
         })
             .then(res => this._checkResponse(res));
@@ -21,7 +21,7 @@ class Api {
     getUserData = () => {
         return fetch(`${this._baseUrl}/${this._cohort}/users/me`, {
             headers: {
-              authorization: this._token
+                authorization: this._token
             }
         })
             .then(res => this._checkResponse(res));

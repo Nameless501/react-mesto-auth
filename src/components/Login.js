@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as auth from '../utils/Auth';
 
-function Login() {
+function Login({ setLoginStatus }) {
     const history = useHistory();
 
     const [email, setEmail] = useState({
@@ -37,12 +37,8 @@ function Login() {
         }
     }
 
-    function handleFormValidity() {
-        email.isValid && password.isValid ? setFormValidity(true) : setFormValidity(false);
-    }
-
     useEffect(() => {
-        handleFormValidity();
+        email.isValid && password.isValid ? setFormValidity(true) : setFormValidity(false);
     },
     [email, password])
 
@@ -66,6 +62,7 @@ function Login() {
         auth.login(password.value, email.value)
             .then(res => {
                 if(res) {
+                    setLoginStatus(true);
                     history.push('/');
                 }
             });
