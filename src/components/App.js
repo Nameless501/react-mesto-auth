@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { LoginContext } from '../contexts/LoginContext.js';
 import { LoadingContext } from '../contexts/LoadingContext.js';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Header from './Header.js';
 import Main from './Main.js';
 import AddPlacePopup from './AddPlacePopup.js';
@@ -15,9 +15,11 @@ import Register from './Register.js';
 import Login from './Login.js';
 import InfoTooltip from './InfoTooltip.js';
 import ProtectedRoute from './ProtectedRoute.js';
+import * as auth from '../utils/Auth.js';
 
 function App() {
   // popup state
+
   const [isEditProfilePopupOpen, setEditProfileState] = useState(false);
   const [isAddPlacePopupOpen, setAddPlaceState] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarState] = useState(false);
@@ -27,13 +29,20 @@ function App() {
   const [registerStatus, setRegisterStatus] = useState({isOpen: false, status: false});
   
   // cards and user data state
-  const [currentUser, setCurrentUser] = useState({});
+
+  const [currentUser, setCurrentUser] = useState({data: {}, email: ''});
   const [cardsData, setCardsData] = useState([]);
 
   // login state
+
   const [isLoggedIn, setLoginStatus] = useState(false);
 
+  // history
+
+  const history = useHistory();
+
   // Получение данных карточек и пользователя при открытии страницы
+
   useEffect(() => {
     Promise.all([api.getCardsData(), api.getUserData()])
         .then(allData => {
@@ -41,13 +50,17 @@ function App() {
           return [cardsData, userData]
         })
         .then(([cardsData, userData]) => {
-          setCurrentUser(userData);
+          setCurrentUser(prevState => ({
+            ...prevState,
+            data: userData,
+          }));
           setCardsData(cardsData);
         })
         .catch(err => console.log(`Не удалость загрузить данные. Ошибка: ${err}`));
   }, []);
 
   // Изменения состояния попапов
+
   function onEditProfile() {
     setEditProfileState(true)
   }
@@ -103,7 +116,10 @@ function App() {
     setIsLoading(true);
 
     api.setUserData(data)
-      .then(newUserData => setCurrentUser(newUserData))
+      .then(newUserData => setCurrentUser(prevState => ({
+        ...prevState,
+        data: newUserData,
+      })))
       .then(() => closeAllPopups())
       .catch(err => console.log(`Не удалость обновить данные пользователя. Ошибка: ${err}`))
       .finally(() => setIsLoading(false));
@@ -113,7 +129,10 @@ function App() {
     setIsLoading(true);
 
     api.setAvatar(data)
-      .then(newUserData => setCurrentUser(newUserData))
+      .then(newUserData => setCurrentUser(prevState => ({
+        ...prevState,
+        data: newUserData,
+      })))
       .then(() => closeAllPopups())
       .catch(err => console.log(`Не удалость обновить аватар. Ошибка: ${err}`))
       .finally(() => setIsLoading(false));
@@ -143,14 +162,49 @@ function App() {
     }
   }
 
+  // проверка токена при входе и выход из аккаунта
+
+  function checkToken() {
+    const token = localStorage.getItem('token');
+
+    if(token) {
+      auth.checkToken(token)
+        .then(res => {
+          if(res) {
+            setCurrentUser(prevState => ({
+              ...prevState,
+              email: res.email,
+            }))
+            setLoginStatus(true);
+            history.push('/');
+          }
+        });
+    }
+  }
+
+  useEffect(() => {
+    checkToken()
+  }, []);
+
+  function signOut(){
+    localStorage.removeItem('token');
+    setLoginStatus(false);
+    history.push('/sign-in');
+  }
+
+  // JSX
+
   return (
     <div className="App">
       <LoginContext.Provider value={isLoggedIn} >
         <CurrentUserContext.Provider value={currentUser} >
-          <Header />
+          <Header signOut={signOut} />
           <Switch>
             <Route path='/sign-in'>
-              <Login setLoginStatus={setLoginStatus} />
+              <Login 
+                setLoginStatus={setLoginStatus}
+                handleInfoOpen={handleRegisterInfo} 
+              />
             </Route>
             <Route path='/sign-up'>
               <Register handleInfoOpen={handleRegisterInfo} />

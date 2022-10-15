@@ -57,12 +57,12 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
     useEffect(() => {
         setName({
-            value: currentUser.name,
+            value: currentUser.data.name,
             isValid: true,
             validationMsg: ''
         });
         setDescription({
-            value: currentUser.about,
+            value: currentUser.data.about,
             isValid: true,
             validationMsg: ''
         });

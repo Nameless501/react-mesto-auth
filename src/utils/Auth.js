@@ -54,3 +54,24 @@ export const login = (password, email) => {
     })
     .catch(err => console.log(`Не удалось войти. ${err}`));
 }
+
+export const checkToken = (token) => {
+    return fetch(`${BASE_URL}/users/me`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization" : `Bearer ${token}`
+            },
+    })
+    .then(response => {
+        try {
+            if (response.status === 200){
+                return response.json();
+            }
+        } catch(err) {
+            return (err);
+        }
+    })
+    .then(res => res.data)
+    .catch(err => console.log(`Не удалось проверить токен. ${err}`));
+}

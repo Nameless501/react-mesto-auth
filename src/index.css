@@ -26,6 +26,14 @@
 
 @import url(./blocks/header/__logo/header__logo.css);
 
+@import url(./blocks/header/__button/header__button.css);
+
+@import url(./blocks/header/__button/_type/header__button_type_logout.css);
+
+@import url(./blocks/header/__navigation-bar/header__navigation-bar.css);
+
+@import url(./blocks/header/__email/header__email.css);
+
 /* Блок Profile */
 
 @import url(./blocks/profile/profile.css);

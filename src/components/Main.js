@@ -10,12 +10,12 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, cardsData,
         <>
             <div className='content'>
                 <section className="profile content__profile">
-                    <div style={{ backgroundImage: `url(${currentUser.avatar})` }} className="profile__avatar" />
+                    <div style={{ backgroundImage: `url(${currentUser.data.avatar})` }} className="profile__avatar" />
                     <div className="profile__avatar-cover" onClick={onEditAvatar} />
                     <div className="profile__info">
-                        <h1 className="profile__name">{currentUser.name}</h1>
+                        <h1 className="profile__name">{currentUser.data.name}</h1>
                         <button type="button" className="profile__edit-button" onClick={onEditProfile} />
-                        <p className="profile__job">{currentUser.about}</p>
+                        <p className="profile__job">{currentUser.data.about}</p>
                     </div>
                     <button type="button" className="profile__add-button" onClick={onAddPlace} />
                 </section>

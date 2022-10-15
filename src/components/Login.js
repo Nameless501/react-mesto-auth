@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as auth from '../utils/Auth';
 
-function Login({ setLoginStatus }) {
+function Login({ setLoginStatus, handleInfoOpen }) {
     const history = useHistory();
 
     const [email, setEmail] = useState({
@@ -64,6 +64,8 @@ function Login({ setLoginStatus }) {
                 if(res) {
                     setLoginStatus(true);
                     history.push('/');
+                } else {
+                    handleInfoOpen(false);
                 }
             });
     }
