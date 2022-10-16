@@ -200,15 +200,6 @@ function App() {
         <CurrentUserContext.Provider value={currentUser} >
           <Header signOut={signOut} />
           <Switch>
-            <Route path='/sign-in'>
-              <Login 
-                setLoginStatus={setLoginStatus}
-                handleInfoOpen={handleRegisterInfo} 
-              />
-            </Route>
-            <Route path='/sign-up'>
-              <Register handleInfoOpen={handleRegisterInfo} />
-            </Route>
             <ProtectedRoute 
               path="/"
               component={Main}
@@ -219,7 +210,17 @@ function App() {
               cardsData={cardsData} 
               onCardLike={handleCardLike} 
               onCardDelete={handleDeleteClick} 
+              exact
             />
+            <Route path='/sign-in'>
+              <Login 
+                setLoginStatus={setLoginStatus}
+                handleInfoOpen={handleRegisterInfo} 
+              />
+            </Route>
+            <Route path='/sign-up'>
+              <Register handleInfoOpen={handleRegisterInfo} />
+            </Route>
           </Switch>
           <LoadingContext.Provider value={isLoading} >
             <EditProfilePopup 
