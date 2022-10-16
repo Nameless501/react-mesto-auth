@@ -1,5 +1,9 @@
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
+function checkResponse(res) {
+    return res.ok ? res.json() : Promise.reject(res.status);
+}
+
 export const register = (password, email) => {
     return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
@@ -11,17 +15,7 @@ export const register = (password, email) => {
             email
             })
     })
-        .then(response => {
-            try {
-                if (response.status === 201){
-                    return response.json();
-                }
-            } catch(e) {
-                return (e)
-            }
-        })
-        .then(res => res)
-        .catch(err => console.log(`Не удалось зарегистрировать пользователя. ${err}`));
+        .then(response => checkResponse(response))
 }
 
 export const login = (password, email) => {
@@ -35,16 +29,8 @@ export const login = (password, email) => {
             email
             })
     })
-        .then(response => {
-            try {
-                if (response.status === 200){
-                    return response.json();
-                }
-            } catch(err) {
-                return (err)
-            }
-        })
-        .then(data => {
+        .then(response => checkResponse(response))
+        .then(data => { 
             if(data.token) {
                 localStorage.setItem('token', data.token);
                 return data;
@@ -52,7 +38,6 @@ export const login = (password, email) => {
                 return;
             }
         })
-        .catch(err => console.log(`Не удалось войти. ${err}`));
 }
 
 export const checkToken = (token) => {
@@ -63,15 +48,6 @@ export const checkToken = (token) => {
             "Authorization" : `Bearer ${token}`
             },
     })
-        .then(response => {
-            try {
-                if (response.status === 200){
-                    return response.json();
-                }
-            } catch(err) {
-                return (err);
-            }
-        })
+        .then(response => checkResponse(response))
         .then(res => res.data)
-        .catch(err => console.log(`Не удалось проверить токен. ${err}`));
 }

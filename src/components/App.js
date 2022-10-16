@@ -162,7 +162,7 @@ function App() {
     }
   }
 
-  // проверка токена при входе, выход из аккаунта
+  // регистрация, вход в аккаунт, проверка токена при входе, выход из аккаунта
 
   function checkToken() {
     const token = localStorage.getItem('token');
@@ -178,7 +178,8 @@ function App() {
             setLoginStatus(true);
             history.push('/');
           }
-        });
+        })
+        .catch(err => console.log(`Не удалось проверить токен. ${err}`));
     }
   }
 
@@ -190,6 +191,27 @@ function App() {
     localStorage.removeItem('token');
     setLoginStatus(false);
     history.push('/sign-in');
+  }
+
+  function handleRegister(password, email) {
+    auth.register(password, email)
+      .then(() => handleRegisterInfo(true))
+      .catch(err => {
+        handleRegisterInfo(false);
+        console.log(`Не удалось зарегистрировать пользователя. ${err}`);
+      });
+  }
+
+  function handleLogin(password, email) {
+    auth.login(password, email)
+      .then(() => {
+        setLoginStatus(true);
+        history.push('/');
+      })
+      .catch(err => {
+        handleRegisterInfo(false);
+        console.log(`Не удалось войти. ${err}`);
+      });
   }
 
   // JSX
@@ -214,12 +236,11 @@ function App() {
             />
             <Route path='/sign-in'>
               <Login 
-                setLoginStatus={setLoginStatus}
-                handleInfoOpen={handleRegisterInfo} 
+                handleLogin={handleLogin} 
               />
             </Route>
             <Route path='/sign-up'>
-              <Register handleInfoOpen={handleRegisterInfo} />
+              <Register handleRegister={handleRegister} />
             </Route>
           </Switch>
           <LoadingContext.Provider value={isLoading} >

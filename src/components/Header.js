@@ -6,8 +6,8 @@ import { useLocation } from "react-router-dom";
 import HeaderButton from './HeaderButton';
 
 function Header({ signOut }) {
-    let isLoggedIn = useContext(LoginContext);
-    let currentLocation = useLocation();
+    const isLoggedIn = useContext(LoginContext);
+    const currentLocation = useLocation();
 
     return(
         <div className={`

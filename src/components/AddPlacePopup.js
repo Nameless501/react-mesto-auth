@@ -1,65 +1,22 @@
 import { useEffect, useState } from 'react';
 import PopupWithForm from './PopupWithForm.js';
+import useFormStateAndValidation from '../hooks/useFormStateAndValidation.js';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-    const [name, setName] = useState({
-        value: '',
-        isValid: false,
-        validationMsg: ''
-    });
+    const { values, errorMessages, formIsValid, onChange, resetFormValues } = useFormStateAndValidation();
 
-    const [link, setLink] = useState({
-        value: '',
-        isValid: false,
-        validationMsg: ''
-    });
-
-    const [formIsValid, setFormValidity] = useState(false);
-
-    function handleChange(evt) {
-        let callBack = evt.target.name === 'name' ? setName : setLink;
-        
-        if (evt.target.validity.valid) {
-            callBack({
-                value: evt.target.value,
-                isValid: true,
-                validationMsg: ''
-            });
-        } else {
-            callBack({
-                value: evt.target.value,
-                isValid: false,
-                validationMsg: evt.target.validationMessage
-            });
-        }
-    }
+    useEffect(() => {
+        resetFormValues();
+    }, [isOpen])
 
     function handleSubmit(evt) {
         evt.preventDefault();
         
         onAddPlace({
-            name: name.value,
-            link: link.value
+            name: values.name,
+            link: values.link,
         })
     }
-
-    useEffect(() => {
-        name.isValid && link.isValid ? setFormValidity(true) : setFormValidity(false);
-    },
-    [name, link])
-
-    useEffect(() => {
-        setName({
-            value: '',
-            isValid: false,
-            validationMsg: ''
-        });
-        setLink({
-            value: '',
-            isValid: false,
-            validationMsg: ''
-        });
-    }, [isOpen])
 
     return(
         <PopupWithForm 
@@ -81,16 +38,16 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
                     required 
                     minLength="2" 
                     maxLength="30" 
-                    onChange={handleChange} 
-                    value={name.value} 
+                    onChange={onChange} 
+                    value={values.name || ''} 
                 />
                 <span 
                     className={`popup__error-message ${
-                        (!name.isValid && isOpen) ? 
+                        (!formIsValid && isOpen) ? 
                             "popup__error-message_visible" : "popup__error-message_hidden"
                         }`} 
                 >
-                    {name.validationMsg}
+                    {errorMessages.name}
                 </span>
                 <input 
                     type="url" 
@@ -99,16 +56,16 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
                     id="link-input" 
                     className="popup__input popup__input_type_link" 
                     required 
-                    onChange={handleChange} 
-                    value={link.value} 
+                    onChange={onChange} 
+                    value={values.link || ''} 
                 />
                 <span 
                     className={`popup__error-message ${
-                        (!link.isValid && isOpen) ? 
+                        (!formIsValid && isOpen) ? 
                             "popup__error-message_visible" : "popup__error-message_hidden"
                         }`} 
                 >
-                    {link.validationMsg}
+                    {errorMessages.link}
                 </span>
             </>
         </PopupWithForm>
