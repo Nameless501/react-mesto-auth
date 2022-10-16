@@ -8,11 +8,14 @@
 }
 
 .header__menu-button_type_open::after {
-    content: ' ';
-    margin: 15px 0 0;
+    content: '';
+    margin: 0;
     padding: 0;
     height: 3px;
     width: 24px;
     display: block;
     background-color: #FFFFFF;
+    position: absolute;
+    top: 15px;
+    left: 0;
 }
