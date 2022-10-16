@@ -1,37 +1,38 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import headerLogo from '../images/logo.svg'
 import Navigation from './Navigation';
+import { LoginContext } from '../contexts/LoginContext';
+import { useLocation } from "react-router-dom";
+import HeaderButton from './HeaderButton';
 
 function Header({ signOut }) {
-    const [menuIsOpen, setMenuStatus] = useState(false);
-
-    function handleClick() {
-        if(menuIsOpen) {
-            setMenuStatus(false);
-        } else {
-            setMenuStatus(true);
-        }
-    }
+    let isLoggedIn = useContext(LoginContext);
+    let currentLocation = useLocation();
 
     return(
-        <div className='header page__header'>
+        <div className={`
+            header 
+            page__header
+            ${isLoggedIn ?
+                "header_type_login" :
+                "header_type_sign"}
+            `} 
+        >
             <img 
                 src={headerLogo} 
                 alt="Логотип" 
                 className="header__logo"
             >
             </img>
-            <Navigation 
-                signOut={signOut}
-                isOpen={menuIsOpen}
-            />
-            <button 
-                className={`header__menu-button 
-                    ${menuIsOpen ? 
-                        "header__menu-button_type_close" : "header__menu-button_type_open"}
-                    `}
-                onClick={handleClick}
-            />
+            {isLoggedIn && 
+                <Navigation signOut={signOut} />
+            }
+            {currentLocation.pathname === "/sign-in" &&
+                <HeaderButton text="Регистрация" link="/sign-up" />
+            }
+            {currentLocation.pathname === "/sign-up" &&
+                <HeaderButton text="Войти" link="/sign-in" />
+            }
         </div>
     );
 }

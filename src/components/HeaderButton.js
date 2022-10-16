@@ -9,7 +9,12 @@ function HeaderButton({ text, link, signOut }) {
         <Link to={link} >
             <button 
                 type="button" 
-                className={`header__button ${isLoggedIn && "header__button_type_logout"}`}
+                className={`
+                    header__button 
+                    ${isLoggedIn ? 
+                        "header__button_type_logout" : "header__button_type_sign"
+                    }
+                `}
                 onClick={isLoggedIn ? signOut : undefined}
             >
                 {text}
